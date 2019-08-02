@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询页面</title>
+</head>
+<body>
+<h1><font>查询信息页面</font></h1>
+<form name="form1" method="post" >
+    根据投保人名称查询:<input name="insurName" type="text" id="insurName">
+    <br>
+    <br>
+    <a href="javascript:;" onclick= "formSubmit()">查询</a>
+</form>
+
+<script type="text/javascript">
+
+	function formSubmit(){
+		var jsonData = {};
+		jsonData.insurName=$("#insurName").val();
+		
+		alert( JSON.stringify(jsonData) );
+		
+		ajaxJson(
+				'/fulan/insertcar',
+				jsonData,
+				function(data){
+					alert(JSON.stringify(data));
+				},
+				"POST",
+				function(){},
+				false
+		 );
+	}
+	
+	function ajaxJson(url, reqData, successcallBack, type, failcallBack, async) {
+	    var isAsync = async || true;
+	    var sendType = type || 'POST';
+
+	    var _settings = {};
+	    _settings.async = isAsync;
+	    _settings.cache = false;
+	    _settings.type = sendType;
+	    if (sendType !== "post") {
+	        _settings.contentType = "application/json; charset=UTF-8";
+	    } else {
+	        _settings.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+	    }
+	    _settings.dataType = "json"
+	    if (reqData != null || reqData != undefined) {
+	        _settings.data = JSON.stringify(reqData);
+	    }
+	    //成功回调
+	    _settings.success = function (res, status, xhr) {
+
+	        if (res != undefined && res != "") {
+	            if (successcallBack != null || successcallBack != undefined) {
+	                successcallBack(res);
+	            }
+	            else {
+	            	alert(JSON.stringify(res));
+	            }
+	        }
+	        else {
+	            if (failcallBack != null || failcallBack != undefined) {
+	                failcallBack(res);
+	            }
+	            else {
+	            	alert(JSON.stringify(res));
+	            }
+	        }
+	    }
+	    //失败回调
+	    _settings.error = function (res) {
+	        alert(JSON.stringify(res));
+	    }
+	    $.ajax(url, _settings);
+	}
+</script>
+<script type="text/javascript" src="/fulan/static/js/jquery.2.1.4.min.js"></script>
+</body>
+</html>

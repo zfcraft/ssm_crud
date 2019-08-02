@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fulan.server.dao.InsuranceDao" >
+<!-- insurName,insurCate,insurPaper,insurPhone,insurAddr,insurEmail-->
+<resultMap type="com.fulan.server.model.Insurance" id="mymap1">
+<id property = "id" column = "id"></id>
+<result property = "insurName" column = "insurName"></result>
+<result property = "carEng" column = "carEng"></result>
+<result property = "carDate" column = "carDate"></result>
+<result property = "carValue" column = "carValue"></result>
+<!-- <association property="carEntity" javaType="CarEntity" column="id">
+<id property = "id" column = "id"></id>
+<result property = "carNum" column = "carNum"></result>
+<result property = "carEng" column = "carEng"></result>
+<result property = "carDate" column = "carDate"></result>
+<result property = "carValue" column = "carValue"></result>
+</association> -->
+<collection property="carEntity" ofType="CarEntity">
+<id property = "id" column = "id"></id>
+<result property = "carNum" column = "carNum"></result>
+<result property = "carEng" column = "carEng"></result>
+<result property = "carDate" column = "carDate"></result>
+<result property = "carValue" column = "carValue"></result>
+</collection>
+</resultMap>
+<select id="getMesByCarid" resultType="mymap1" parameterType="Integer">
+
+select * from car,insurance
+		where
+		car.id=insurance.id and car.id=#{id};
+
+</select>
+</mapper>

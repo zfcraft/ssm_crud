@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fulan.server.dao.CarDao" >
+<!-- /*车牌号码:  如果勾选临牌,默认为LS+车架号后6位, 不允许为空。
+	车架号:    长度为17位, 不允许为空。
+	发动号:    不允许为空。
+	初登日期:  格式:yyyy-MM-dd 且小于当天, 不允许为空。
+	购车价值:  金额整数，不允许为空。
+	下一步按钮 id,carNum,carFrame,carEng,carDate,carValue*/ -->
+<resultMap type="com.fulan.server.model.CarEntity" id="mymap">
+<id property = "id" column = "id"></id>
+<result property = "carNum" column = "carNum"></result>
+<result property = "carEng" column = "carEng"></result>
+<result property = "carDate" column = "carDate"></result>
+<result property = "carValue" column = "carValue"></result>
+
+</resultMap>
+
+</mapper>

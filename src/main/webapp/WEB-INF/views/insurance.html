@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>投保信息页面</title>
+<script type="text/javascript" src="/fulan/static/js/jquery.2.1.4.min.js"></script>
+</head>
+<body>
+<!-- 投保人名称: 2~20位, 不允许为空。
+	投保人证件类型: 下拉框。
+	投保人证件号码: 不允许为空。
+	投保人移动电话:  11位, 不允许为空。
+	投保人地址:  不允许为空。
+	电子邮箱: 不允许为空 -->
+<!-- insurName,insurCate,insurPaper,insurPhone,insurAddr,insurEmail -->
+<div class="col-md-8"
+				style="background: #fff; padding: 40px 80px; margin: 30px; border: 7px solid #ccc;">
+				<h1><font>投保信息页面</font></h1>
+				<form id="myform" class="form-horizontal" action="" method="post" style="margin-top: 5px;">
+					<div class="form-group">
+						<label for="username" class="col-sm-2 control-label">投保人名称</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" id="insurName" name="insurName"
+								placeholder="请输入投保人名称">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputPassword3" class="col-sm-2 control-label">投保人证件类型</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" id="insurCate" name="insurCate"
+								placeholder="请输入证件类型">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="confirmpwd" class="col-sm-2 control-label">投保人证件号码</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" id="insurPaper" name="insurPaper"
+								placeholder="请输入证件号码">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="date" class="col-sm-2 control-label">投保人移动电话</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control"  id="insurAddr" name="insurAddr"
+							placeholder="请输入移动电话">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="date" class="col-sm-2 control-label">投保人地址</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control"  id="insurPhone" name="insurPhone"
+							placeholder="请输入地址">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="date" class="col-sm-2 control-label">电子邮箱</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control"  id="insurEmail" name="insurEmail"
+							placeholder="请输入电子邮箱">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+						 <a href="/fulan/static/html/car.html">上一步</a>
+						<a href="javascript:;" onclick="FormSubmit()">投保</a>
+						</div>
+					</div>
+					<div>
+					
+					
+					</div>
+				</form>
+			</div>
+		<!-- 	insurName,insurCate,insurPaper,insurPhone,insurAddr,insurEmail -->
+		<script type="text/javascript">
+		
+			
+			/* 
+			let queryString = location.search.slice(1);
+			let queryStringArray = queryString.split('&');
+			let info = queryStringArray.map(obj =>{
+				obj = obj.split('=');
+				let key = obj[0];
+				let value = obj[1];
+				return {
+					key,
+					value
+				}
+			});
+			console.log(info); */
+			function FormSubmit(){
+				var info = JSON.parse(sessionStorage.getItem('info'));
+				console.log(info); 
+				var jsonData = {};
+				jsonData.insurName=$("#insurName").val();
+				jsonData.insurCate=$("#insurCate").val();
+				jsonData.insurPaper=$("#insurPaper").val();
+				jsonData.insurPhone=$("#insurPhone").val();
+				jsonData.insurAddr=$("#insurAddr").val();
+				jsonData.insurEmail=$("#insurEmail").val();
+				jsonData.carNum=info.carNum;
+				jsonData.carNum=info.carFrame;
+				jsonData.carNum=info.carEng;
+				jsonData.carNum=info.carDate;
+				jsonData.carNum=info.carValue;
+				
+				alert( JSON.stringify(jsonData) );
+				
+				ajaxJson(
+						'/fulan/insertInsur',
+						jsonData,
+						function(data){
+							alert(JSON.stringify(data));
+						},
+						"POST",
+						function(){},
+						false
+				 );
+			}
+			
+			function ajaxJson(url, reqData, successcallBack, type, failcallBack, async) {
+			    var isAsync = async || true;
+			    var sendType = type || 'POST';
+
+			    var _settings = {};
+			    _settings.async = isAsync;
+			    _settings.cache = false;
+			    _settings.type = sendType;
+			    if (sendType !== "post") {
+			        _settings.contentType = "application/json; charset=UTF-8";
+			    } else {
+			        _settings.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+			    }
+			    _settings.dataType = "json"
+			    if (reqData != null || reqData != undefined) {
+			        _settings.data = JSON.stringify(reqData);
+			    }
+			<!--     成功回调 -->
+			    _settings.success = function (res, status, xhr) {
+
+			        if (res != undefined && res != "") {
+			            if (successcallBack != null || successcallBack != undefined) {
+			                successcallBack(res);
+			            }
+			            else {
+			            	alert(JSON.stringify(res));
+			            }
+			        }
+			        else {
+			            if (failcallBack != null || failcallBack != undefined) {
+			                failcallBack(res);
+			            }
+			            else {
+			            	alert(JSON.stringify(res));
+			            }
+			        }
+			    }
+			 <!--    失败回调 -->
+			    _settings.error = function (res) {
+			        alert(JSON.stringify(res));
+			    }
+			    $.ajax(url, _settings);
+			}
+			</script>			
+	</body>
+</html>
